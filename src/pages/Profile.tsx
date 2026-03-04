@@ -3,41 +3,43 @@ import { User, Settings, RefreshCw, Database, Shield, ChevronRight } from "lucid
 import { supabase } from "@/lib/supabaseClient";
 import { Button } from "@/components/ui/button";
 
-const Profile = () => {
-  export default function Profile() {
-    const FUNCTIONS_BASE = "https://dbmhqazeyjuezulqtxbb.supabase.co/functions/v1";
+export default function Profile() {
+  const FUNCTIONS_BASE = "https://dbmhqazeyjuezulqtxbb.supabase.co/functions/v1";
 
-const connectStrava = async () => {
-  const { data } = await supabase.auth.getSession();
-  const jwt = data.session?.access_token;
-  if (!jwt) return alert("Zaloguj się najpierw.");
+  const connectStrava = async () => {
+    const { data } = await supabase.auth.getSession();
+    const jwt = data.session?.access_token;
+    if (!jwt) return alert("Zaloguj się najpierw.");
 
-  const res = await fetch(`${FUNCTIONS_BASE}/strava-auth-start`, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${jwt}` },
-  });
+    const res = await fetch(`${FUNCTIONS_BASE}/strava-auth-start`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
 
-  const out = await res.json();
-  if (!out?.url) return alert("Nie udało się rozpocząć autoryzacji Stravy.");
-  window.location.href = out.url;
-};
+    const out = await res.json();
+    if (!out?.url) return alert("Nie udało się rozpocząć autoryzacji Stravy.");
+    window.location.href = out.url;
+  };
 
-const syncStrava = async () => {
-  const { data } = await supabase.auth.getSession();
-  const jwt = data.session?.access_token;
-  if (!jwt) return alert("Zaloguj się najpierw.");
+  const syncStrava = async () => {
+    const { data } = await supabase.auth.getSession();
+    const jwt = data.session?.access_token;
+    if (!jwt) return alert("Zaloguj się najpierw.");
 
-  const res = await fetch(`${FUNCTIONS_BASE}/strava-sync`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${jwt}` },
-  });
+    const res = await fetch(`${FUNCTIONS_BASE}/strava-sync`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
 
-  const out = await res.json();
-  alert(JSON.stringify(out, null, 2));
-};
+    const out = await res.json();
+    alert(JSON.stringify(out, null, 2));
+  };
+
   return (
-    <div className="p-6 text-red-500 text-xl">TEST STRAVA BUTTONS</div>
     <div className="container py-6 space-y-6">
+      {/* DEBUG (na chwilę, potem usuń) */}
+      <div className="p-2 text-red-500 text-sm">TEST STRAVA BUTTONS</div>
+
       <div className="space-y-1">
         <h2 className="font-heading text-2xl font-bold tracking-tight">Profil</h2>
         <p className="text-sm text-muted-foreground">Ustawienia i konto Garmin</p>
@@ -52,12 +54,22 @@ const syncStrava = async () => {
         <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center">
           <User className="h-6 w-6 text-primary" />
         </div>
-        <div>
-          <h3 className="font-heading font-semibold">Użytkownik</h3>
-          <p className="text-xs text-muted-foreground">Garmin Connect • Połączono</p>
-          <Button onClick={connectStrava}>Połącz Strava</Button>
-          <Button variant="secondary" onClick={syncStrava}>Sync aktywności</Button>
+
+        <div className="space-y-2">
+          <div>
+            <h3 className="font-heading font-semibold">Użytkownik</h3>
+            <p className="text-xs text-muted-foreground">Garmin Connect • Połączono</p>
+          </div>
+
+          {/* Strava buttons */}
+          <div className="flex flex-wrap gap-2">
+            <Button onClick={connectStrava}>Połącz Strava</Button>
+            <Button variant="secondary" onClick={syncStrava}>
+              Sync aktywności
+            </Button>
+          </div>
         </div>
+
         <div className="ml-auto">
           <div className="h-2.5 w-2.5 rounded-full bg-primary" />
         </div>
@@ -91,6 +103,4 @@ const syncStrava = async () => {
       </div>
     </div>
   );
-};
-
-export default Profile;
+}
