@@ -38,7 +38,7 @@ export default function Profile() {
   return (
     <div className="container py-6 space-y-6">
       {/* DEBUG (na chwilę, potem usuń) */}
-      <div className="p-2 text-red-500 text-sm">TEST STRAVA BUTTONS</div>
+      <div className="p-2 text-red-500 text-sm">TEST STRAVA BUTTONS 999</div>
 
       <div className="space-y-1">
         <h2 className="font-heading text-2xl font-bold tracking-tight">Profil</h2>
