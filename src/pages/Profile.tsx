@@ -54,6 +54,8 @@ const syncStrava = async () => {
         <div>
           <h3 className="font-heading font-semibold">Użytkownik</h3>
           <p className="text-xs text-muted-foreground">Garmin Connect • Połączono</p>
+          <Button onClick={connectStrava}>Połącz Strava</Button>
+          <Button variant="secondary" onClick={syncStrava}>Sync aktywności</Button>
         </div>
         <div className="ml-auto">
           <div className="h-2.5 w-2.5 rounded-full bg-primary" />
