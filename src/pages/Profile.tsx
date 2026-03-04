@@ -36,6 +36,7 @@ const syncStrava = async () => {
   alert(JSON.stringify(out, null, 2));
 };
   return (
+    <div className="p-6 text-red-500 text-xl">TEST STRAVA BUTTONS</div>
     <div className="container py-6 space-y-6">
       <div className="space-y-1">
         <h2 className="font-heading text-2xl font-bold tracking-tight">Profil</h2>
