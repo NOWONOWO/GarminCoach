@@ -1,7 +1,40 @@
 import { motion } from "framer-motion";
 import { User, Settings, RefreshCw, Database, Shield, ChevronRight } from "lucide-react";
+import { supabase } from "@/lib/supabaseClient";
+import { Button } from "@/components/ui/button";
 
 const Profile = () => {
+  export default function Profile() {
+    const FUNCTIONS_BASE = "https://dbmhqazeyjuezulqtxbb.supabase.co/functions/v1";
+
+const connectStrava = async () => {
+  const { data } = await supabase.auth.getSession();
+  const jwt = data.session?.access_token;
+  if (!jwt) return alert("Zaloguj się najpierw.");
+
+  const res = await fetch(`${FUNCTIONS_BASE}/strava-auth-start`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${jwt}` },
+  });
+
+  const out = await res.json();
+  if (!out?.url) return alert("Nie udało się rozpocząć autoryzacji Stravy.");
+  window.location.href = out.url;
+};
+
+const syncStrava = async () => {
+  const { data } = await supabase.auth.getSession();
+  const jwt = data.session?.access_token;
+  if (!jwt) return alert("Zaloguj się najpierw.");
+
+  const res = await fetch(`${FUNCTIONS_BASE}/strava-sync`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${jwt}` },
+  });
+
+  const out = await res.json();
+  alert(JSON.stringify(out, null, 2));
+};
   return (
     <div className="container py-6 space-y-6">
       <div className="space-y-1">
